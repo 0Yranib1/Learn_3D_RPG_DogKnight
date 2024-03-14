@@ -8,10 +8,12 @@ public class PlayerController : MonoBehaviour
 {
 
     private NavMeshAgent agent;
+    private Animator anim;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
     }
 
     public void MoveToTarget(Vector3 target)
@@ -28,6 +30,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        SwitchAnimation();
+    }
+
+    void SwitchAnimation()
+    {
+        anim.SetFloat("Speed",agent.velocity.sqrMagnitude);
     }
 }
