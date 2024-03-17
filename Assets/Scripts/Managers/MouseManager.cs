@@ -11,6 +11,7 @@ public class MouseManager : MonoBehaviour
     private RaycastHit hitInfo;
     
     public event Action<Vector3> OnMouseClicked;
+    public event Action<GameObject> OnEnemyClicked; 
 
     public Texture2D point, doorway, attack, target, arrow;
 
@@ -56,6 +57,10 @@ public class MouseManager : MonoBehaviour
             if (hitInfo.collider.gameObject.CompareTag("Ground"))
             {
                 OnMouseClicked?.Invoke(hitInfo.point);
+            }
+            if (hitInfo.collider.gameObject.CompareTag("Enemy"))
+            {
+                OnEnemyClicked?.Invoke(hitInfo.collider.gameObject);
             }
         }
     }
