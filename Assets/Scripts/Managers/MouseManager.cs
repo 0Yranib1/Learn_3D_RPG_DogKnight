@@ -9,6 +9,7 @@ public class MouseManager : MonoBehaviour
     public static MouseManager Instance;
     
     private RaycastHit hitInfo;
+
     
     public event Action<Vector3> OnMouseClicked;
     public event Action<GameObject> OnEnemyClicked; 
