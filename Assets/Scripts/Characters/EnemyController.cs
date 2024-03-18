@@ -31,6 +31,8 @@ public class EnemyController : MonoBehaviour
     private bool isChase;
     private bool isFollow;
 
+    private float lastAttackTime;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -60,6 +62,7 @@ public class EnemyController : MonoBehaviour
     {
         SwitchStates();
         SwithcAnimation();
+        lastAttackTime -= Time.deltaTime;
     }
 
     void SwithcAnimation()
@@ -67,6 +70,7 @@ public class EnemyController : MonoBehaviour
         anim.SetBool("Walk",isWalk);
         anim.SetBool("Chase",isChase);
         anim.SetBool("Follow",isFollow);
+        anim.SetBool("Critical",characterStatus.isCritical);
     }
     
     //怪物状态切换
@@ -133,9 +137,23 @@ public class EnemyController : MonoBehaviour
                 else
                 {
                     isFollow = true;
+                    agent.isStopped = false;
                     agent.destination = attackTarget.transform.position;
                 }
                 //在攻击范围内攻击
+                if (TargetInSkillRange() || TargetInAttackRange())
+                {
+                    isFollow = false;
+                    agent.isStopped = true;
+                    if (lastAttackTime <= 0)
+                    {
+                        lastAttackTime = characterStatus.attackData.coolDown;
+                        //暴击判断
+                        characterStatus.isCritical = Random.value < characterStatus.attackData.criticalChance;
+                        //攻击
+                        Attack();
+                    }
+                }
                 //配合动画
                 break;
             case EnemyStates.DEAD:
@@ -143,6 +161,48 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    void Attack()
+    {
+        transform.LookAt(attackTarget.transform);
+        if (TargetInAttackRange())
+        {
+            //近身攻击动画
+            anim.SetTrigger("Attack");
+        }
+
+        if (TargetInSkillRange())
+        {
+            //技能攻击
+            anim.SetTrigger("Skill");
+        }
+    }
+    
+    bool TargetInAttackRange()
+    {
+        if (attackTarget != null)
+        {
+            return Vector3.Distance(attackTarget.transform.position, transform.position) <=
+                   characterStatus.attackData.attackRange;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool TargetInSkillRange()
+    {
+        if (attackTarget != null)
+        {
+            return Vector3.Distance(attackTarget.transform.position, transform.position) <=
+                   characterStatus.attackData.skillRange;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     bool FoundPlayer()
     {
         var colliders = Physics.OverlapSphere(transform.position, sightRadius);

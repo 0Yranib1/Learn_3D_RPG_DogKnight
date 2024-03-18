@@ -5,7 +5,11 @@ using UnityEngine;
 public class CharacterStatus : MonoBehaviour
 {
     public CharacterData_SO characterData;
+    public AttackData_SO attackData;
 
+    [HideInInspector]
+    public bool isCritical;
+    
     #region Read from Data_SO
 
     public int MaxHealth
