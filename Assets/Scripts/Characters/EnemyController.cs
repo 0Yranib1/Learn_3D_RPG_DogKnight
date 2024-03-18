@@ -235,4 +235,15 @@ public class EnemyController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position,sightRadius);
     }
+    
+    //Animation Event
+    //攻击动画调用伤害事件
+    void Hit()
+    {
+        if(attackTarget!=null)
+        {
+            var targetStats = attackTarget.GetComponent<CharacterStatus>();
+            targetStats.TakeDamage(characterStatus, targetStats);
+        }
+    }
 }

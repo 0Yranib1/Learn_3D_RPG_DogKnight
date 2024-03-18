@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
         if (target != null)
         {
             attackTarget = target;
+            characterStatus.isCritical = Random.value < characterStatus.attackData.criticalChance;
             StartCoroutine(MoveToAttackTarget());
         }
     }
@@ -51,9 +53,11 @@ public class PlayerController : MonoBehaviour
         //攻击 
         if (lastAttackTime < 0)
         {
+            
+            anim.SetBool("Critical",characterStatus.isCritical);
             anim.SetTrigger("Attack");
             //重置冷却时间 攻击动作
-            lastAttackTime = 0.5f;
+            lastAttackTime = characterStatus.attackData.coolDown;
         }
     }
     
@@ -75,5 +79,14 @@ public class PlayerController : MonoBehaviour
     void SwitchAnimation()
     {
         anim.SetFloat("Speed",agent.velocity.sqrMagnitude);
+    }
+    
+    //Animation Event
+    //攻击动画调用伤害事件
+    void Hit()
+    {
+        var targetStats = attackTarget.GetComponent<CharacterStatus>();
+        
+        targetStats.TakeDamage(characterStatus,targetStats);
     }
 }

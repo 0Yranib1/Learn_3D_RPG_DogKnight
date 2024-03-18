@@ -77,4 +77,26 @@ public class CharacterStatus : MonoBehaviour
     }
 
     #endregion
+
+    #region Character Combat
+
+    public void TakeDamage(CharacterStatus attacker,CharacterStatus defener)
+    {
+        int damage = Mathf.Max(attacker.CurrentDamage() - defener.CurrentDefence,1);
+        CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
+        //更新UI
+        //死亡
+        //经验值
+    }
+
+    private int CurrentDamage()
+    {
+        float coreDamage = UnityEngine.Random.Range(attackData.minDamaga, attackData.maxDamage);
+        if (isCritical)
+        {
+            coreDamage = coreDamage * attackData.critialMultiplier;
+        }
+        return (int)coreDamage;
+    }
+    #endregion
 }
