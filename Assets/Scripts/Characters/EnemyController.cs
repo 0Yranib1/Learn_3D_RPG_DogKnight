@@ -13,7 +13,7 @@ public class EnemyController : MonoBehaviour
     private EnemyStates enemyStates;
     private NavMeshAgent agent;
     private Animator anim;
-    
+    private CharacterStatus characterStatus;
     [Header("Basic Settings")] 
     public float sightRadius;//可视范围
     public bool isGuard;
@@ -38,6 +38,7 @@ public class EnemyController : MonoBehaviour
         anim = GetComponent<Animator>();
         guardPos = transform.position;
         remainLookAtTime = lookAtTime;
+        characterStatus = GetComponent<CharacterStatus>();
     }
     
     private void Start()

@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 
     private NavMeshAgent agent;
     private Animator anim;
-
+    private CharacterStatus characterStatus;
     private GameObject attackTarget;
 
     private float lastAttackTime;
@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        characterStatus = GetComponent<CharacterStatus>();
     }
 
     public void MoveToTarget(Vector3 target)
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
         agent.isStopped = true;
-        //攻击
+        //攻击 
         if (lastAttackTime < 0)
         {
             anim.SetTrigger("Attack");
