@@ -7,6 +7,7 @@ public class CharacterStatus : MonoBehaviour
     public CharacterData_SO characterData;
     public AttackData_SO attackData;
 
+    
     [HideInInspector]
     public bool isCritical;
     
@@ -84,6 +85,10 @@ public class CharacterStatus : MonoBehaviour
     {
         int damage = Mathf.Max(attacker.CurrentDamage() - defener.CurrentDefence,1);
         CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
+        if (attacker.isCritical)
+        {
+            defener.GetComponent<Animator>().SetTrigger("Hit");
+        }
         //更新UI
         //死亡
         //经验值

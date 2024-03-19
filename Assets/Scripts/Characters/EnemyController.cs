@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -21,15 +22,18 @@ public class EnemyController : MonoBehaviour
     private GameObject attackTarget;
     public float lookAtTime;
     private float remainLookAtTime;
+    private Collider coll;
 
     [Header("Patrol State")] 
     public float patrolRange;
     private Vector3 wayPoint;
+    private Quaternion guardRotation;
     private Vector3 guardPos;
     //配合动画
     private bool isWalk;
     private bool isChase;
     private bool isFollow;
+    private bool isDead;
 
     private float lastAttackTime;
 
@@ -39,8 +43,10 @@ public class EnemyController : MonoBehaviour
         speed = agent.speed;
         anim = GetComponent<Animator>();
         guardPos = transform.position;
+        guardRotation = transform.rotation;
         remainLookAtTime = lookAtTime;
         characterStatus = GetComponent<CharacterStatus>();
+        coll = GetComponent<Collider>();
     }
     
     private void Start()
@@ -60,6 +66,10 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (characterStatus.CurrentHealth ==0)
+        {
+            isDead = true;
+        }
         SwitchStates();
         SwithcAnimation();
         lastAttackTime -= Time.deltaTime;
@@ -71,13 +81,18 @@ public class EnemyController : MonoBehaviour
         anim.SetBool("Chase",isChase);
         anim.SetBool("Follow",isFollow);
         anim.SetBool("Critical",characterStatus.isCritical);
+        anim.SetBool("Death",isDead);
     }
     
     //怪物状态切换
     void SwitchStates()
     {
+        if (isDead)
+        {
+            enemyStates = EnemyStates.DEAD;
+        }
         //发现玩家切换到追击状态
-        if (FoundPlayer())
+        else if (FoundPlayer())
         {
             enemyStates = EnemyStates.CHASE;
         }
@@ -85,6 +100,19 @@ public class EnemyController : MonoBehaviour
         switch (enemyStates)
         {
             case EnemyStates.GUARD :
+                isChase = false;
+                if (transform.position != guardPos)
+                {
+                    isWalk = true;
+                    agent.isStopped = false;
+                    agent.destination = guardPos;
+                }
+
+                if (Vector3.SqrMagnitude(guardPos - transform.position) <= agent.stoppingDistance)
+                {
+                    isWalk = false;
+                    transform.rotation = Quaternion.Lerp(transform.rotation, guardRotation, 0.01f);
+                }
                 break;
             case EnemyStates.PATROL:
                 //不在追击状态
@@ -157,6 +185,10 @@ public class EnemyController : MonoBehaviour
                 //配合动画
                 break;
             case EnemyStates.DEAD:
+                coll.enabled = false;
+                agent.enabled = false;
+                
+                Destroy(gameObject,2f);
                 break;
         }
     }
@@ -246,4 +278,5 @@ public class EnemyController : MonoBehaviour
             targetStats.TakeDamage(characterStatus, targetStats);
         }
     }
+    
 }
