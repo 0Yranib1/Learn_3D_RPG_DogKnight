@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 public enum EnemyStates{GUARD,PATROL,CHASE,DEAD}//简易状态枚举 警戒 巡逻 追击 死亡
 [RequireComponent(typeof(NavMeshAgent))]
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour,IEndGameObserver
 {
 
     private EnemyStates enemyStates;
@@ -34,7 +34,7 @@ public class EnemyController : MonoBehaviour
     private bool isChase;
     private bool isFollow;
     private bool isDead;
-
+    private bool playerDead;
     private float lastAttackTime;
 
     private void Awake()
@@ -63,6 +63,16 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        GameManager.Instance.AddObserver(this);
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.RemoveObserver(this);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -70,9 +80,12 @@ public class EnemyController : MonoBehaviour
         {
             isDead = true;
         }
-        SwitchStates();
-        SwithcAnimation();
-        lastAttackTime -= Time.deltaTime;
+        if(!playerDead)
+        {
+            SwitchStates();
+            SwithcAnimation();
+            lastAttackTime -= Time.deltaTime;
+        }
     }
 
     void SwithcAnimation()
@@ -278,5 +291,16 @@ public class EnemyController : MonoBehaviour
             targetStats.TakeDamage(characterStatus, targetStats);
         }
     }
-    
+
+    public void EndNotify()
+    {
+        //獲勝動畫
+        anim.SetBool("Win",true);
+        playerDead = true;
+        //停止所有移動
+        //停止Agent
+        isChase = false;
+        isWalk = false;
+        attackTarget = null;
+    }
 }
