@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MouseManager : MonoBehaviour
+public class MouseManager : Singleton<MouseManager>
 {
-    public static MouseManager Instance;
     
     private RaycastHit hitInfo;
 
@@ -16,14 +15,10 @@ public class MouseManager : MonoBehaviour
 
     public Texture2D point, doorway, attack, target, arrow;
 
-    private void Awake()
+    protected override void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-        }
-
-        Instance = this;
+        base.Awake();
+        // DontDestroyOnLoad(this);
     }
 
     private void Update()
