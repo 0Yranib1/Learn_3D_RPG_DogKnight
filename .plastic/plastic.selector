@@ -1,4 +1,0 @@
-repository "Learn_3D_RPG_DogKnight@yranib1@cloud.cn"
-  path "/"
-    br "/main"
-    co "/main"
