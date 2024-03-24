@@ -1,18 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class Grunt : MonoBehaviour
+public class Grunt : EnemyController
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("Skill")]
+    public float kickForce = 10;
 
-    // Update is called once per frame
-    void Update()
+    public void KickOff()
     {
-        
+        if (attackTarget != null)
+        {
+            transform.LookAt(attackTarget.transform);
+
+            Vector3 direction = attackTarget.transform.position - transform.position;
+            direction.Normalize();
+
+            attackTarget.GetComponent<NavMeshAgent>().isStopped = true;
+            attackTarget.GetComponent<NavMeshAgent>().velocity = direction * kickForce;
+            attackTarget.GetComponent<Animator>().SetTrigger("Dizzy");
+        }
     }
 }

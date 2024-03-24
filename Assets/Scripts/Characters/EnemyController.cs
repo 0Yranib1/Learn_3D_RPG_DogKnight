@@ -20,7 +20,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     public float sightRadius;//可视范围
     public bool isGuard;
     private float speed;
-    private GameObject attackTarget;
+    protected GameObject attackTarget;
     public float lookAtTime;
     private float remainLookAtTime;
     private Collider coll;
@@ -205,8 +205,8 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 break;
             case EnemyStates.DEAD:
                 coll.enabled = false;
-                agent.enabled = false;
-                
+                agent.radius = 0;
+                // agent.enabled = false;
                 Destroy(gameObject,2f);
                 break;
         }
@@ -214,15 +214,17 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     void Attack()
     {
+
         transform.LookAt(attackTarget.transform);
-        if (TargetInAttackRange())
+        if (TargetInAttackRange() && !TargetInSkillRange())
         {
+            Debug.Log("普通攻击");
             //近身攻击动画
             anim.SetTrigger("Attack");
         }
-
         if (TargetInSkillRange())
         {
+            Debug.Log("技能攻击");
             //技能攻击
             anim.SetTrigger("Skill");
         }
