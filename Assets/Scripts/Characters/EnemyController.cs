@@ -14,7 +14,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     private EnemyStates enemyStates;
     private NavMeshAgent agent;
-    private Animator anim;
+    protected Animator anim;
     protected CharacterStatus characterStatus;
     [Header("Basic Settings")] 
     public float sightRadius;//可视范围
@@ -212,7 +212,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         }
     }
 
-    void Attack()
+    protected virtual void Attack()
     {
 
         transform.LookAt(attackTarget.transform);
@@ -228,7 +228,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         }
     }
     
-    bool TargetInAttackRange()
+    protected bool TargetInAttackRange()
     {
         if (attackTarget != null)
         {
@@ -241,7 +241,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         }
     }
 
-    bool TargetInSkillRange()
+    protected bool TargetInSkillRange()
     {
         if (attackTarget != null)
         {
