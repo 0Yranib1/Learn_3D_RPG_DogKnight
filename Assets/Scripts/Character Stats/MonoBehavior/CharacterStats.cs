@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterStatus : MonoBehaviour
 {
+    public CharacterData_SO templateData;
+    
     public CharacterData_SO characterData;
     public AttackData_SO attackData;
 
@@ -12,6 +15,12 @@ public class CharacterStatus : MonoBehaviour
     public bool isCritical;
     
     #region Read from Data_SO
+
+    private void Awake()
+    {
+        if (templateData != null)
+            characterData = Instantiate(templateData);
+    }
 
     public int MaxHealth
     {

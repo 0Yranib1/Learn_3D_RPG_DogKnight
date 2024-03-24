@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 
 public enum EnemyStates{GUARD,PATROL,CHASE,DEAD}//简易状态枚举 警戒 巡逻 追击 死亡
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(CharacterStatus))]
 public class EnemyController : MonoBehaviour,IEndGameObserver
 {
 
@@ -61,15 +62,20 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             enemyStates = EnemyStates.PATROL;
             GetNewWayPoint();
         }
-    }
-
-    private void OnEnable()
-    {
+        //FIXME:场景切换后修改
         GameManager.Instance.AddObserver(this);
     }
+    //切换场景时启用
+    // private void OnEnable()
+    // {
+    //     GameManager.Instance.AddObserver(this);
+    // }
 
     private void OnDisable()
     {
+        if(!GameManager.IsInitialized)
+            return;
+        
         GameManager.Instance.RemoveObserver(this);
     }
 
