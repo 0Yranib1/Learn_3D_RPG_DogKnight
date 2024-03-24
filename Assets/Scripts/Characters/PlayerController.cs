@@ -16,12 +16,14 @@ public class PlayerController : MonoBehaviour
     private float lastAttackTime;
     private bool isDead;
     private float stopDistance;
+    private float originalAttackRange;
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         characterStatus = GetComponent<CharacterStatus>();
         stopDistance = agent.stoppingDistance;
+        originalAttackRange = characterStatus.attackData.attackRange;
     }
 
     public void MoveToTarget(Vector3 target)
@@ -42,6 +44,13 @@ public class PlayerController : MonoBehaviour
         {
             attackTarget = target;
             characterStatus.isCritical = Random.value < characterStatus.attackData.criticalChance;
+            if (attackTarget.CompareTag("AttackAble"))
+            {
+                characterStatus.attackData.attackRange = originalAttackRange + 0.5f;
+            }else if (attackTarget.CompareTag("Enemy"))
+            {
+                characterStatus.attackData.attackRange = originalAttackRange;
+            }
             StartCoroutine(MoveToAttackTarget());
         }
     }
@@ -62,7 +71,6 @@ public class PlayerController : MonoBehaviour
         //攻击 
         if (lastAttackTime < 0)
         {
-            
             anim.SetBool("Critical",characterStatus.isCritical);
             anim.SetTrigger("Attack");
             //重置冷却时间 攻击动作
@@ -102,8 +110,20 @@ public class PlayerController : MonoBehaviour
     //攻击动画调用伤害事件
     void Hit()
     {
-        var targetStats = attackTarget.GetComponent<CharacterStatus>();
+        if (attackTarget.CompareTag("AttackAble"))
+        {
+            if (attackTarget.GetComponent<Rock>())
+            {
+                attackTarget.GetComponent<Rock>().rockStates = Rock.RockStates.HitEnemy;
+                attackTarget.GetComponent<Rigidbody>().velocity = Vector3.one;
+                attackTarget.GetComponent<Rigidbody>().AddForce(transform.forward*20,ForceMode.Impulse);
+            }
+        }
+        else
+        {
+            var targetStats = attackTarget.GetComponent<CharacterStatus>();
         
-        targetStats.TakeDamage(characterStatus,targetStats);
+            targetStats.TakeDamage(characterStatus,targetStats);
+        }
     }
 }
