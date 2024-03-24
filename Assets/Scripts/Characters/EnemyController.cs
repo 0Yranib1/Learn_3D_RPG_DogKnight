@@ -218,13 +218,11 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         transform.LookAt(attackTarget.transform);
         if (TargetInAttackRange() && !TargetInSkillRange())
         {
-            Debug.Log("普通攻击");
             //近身攻击动画
             anim.SetTrigger("Attack");
         }
         if (TargetInSkillRange())
         {
-            Debug.Log("技能攻击");
             //技能攻击
             anim.SetTrigger("Skill");
         }
@@ -293,11 +291,12 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     //攻击动画调用伤害事件
     void Hit()
     {
-        if(attackTarget!=null)
+        if(attackTarget!=null && transform.IsFacingTarget(attackTarget.transform))
         {
             var targetStats = attackTarget.GetComponent<CharacterStatus>();
             targetStats.TakeDamage(characterStatus, targetStats);
         }
+        
     }
 
     public void EndNotify()
