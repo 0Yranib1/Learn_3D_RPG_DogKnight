@@ -101,8 +101,11 @@ public class CharacterStatus : MonoBehaviour
         }
         //更新UI
         UpdateHealthBarOnAttack?.Invoke(CurrentHealth,MaxHealth);
-        //死亡
         //经验值
+        if (CurrentHealth <= 0)
+        {
+            attacker.characterData.UpdateExp(characterData.killPoint);
+        }
     }
 
     public void TakeDamage(int damage, CharacterStatus defener)
