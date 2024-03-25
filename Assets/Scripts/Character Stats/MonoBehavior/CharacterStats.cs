@@ -10,6 +10,7 @@ public class CharacterStatus : MonoBehaviour
     public CharacterData_SO characterData;
     public AttackData_SO attackData;
 
+    public event Action<int, int> UpdateHealthBarOnAttack;
     
     [HideInInspector]
     public bool isCritical;
@@ -99,6 +100,7 @@ public class CharacterStatus : MonoBehaviour
             defener.GetComponent<Animator>().SetTrigger("Hit");
         }
         //更新UI
+        UpdateHealthBarOnAttack?.Invoke(CurrentHealth,MaxHealth);
         //死亡
         //经验值
     }
@@ -107,6 +109,7 @@ public class CharacterStatus : MonoBehaviour
     {
         int currentDamage = Mathf.Max(damage - defener.CurrentDefence, 0);
         CurrentHealth = Mathf.Max(CurrentHealth - currentDamage, 0);
+        UpdateHealthBarOnAttack?.Invoke(CurrentHealth,MaxHealth);
     }
 
     private int CurrentDamage()

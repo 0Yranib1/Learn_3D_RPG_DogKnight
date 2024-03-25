@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 8526021658578976583}
   - component: {fileID: 1451057802579889892}
   - component: {fileID: 5006233928066162708}
+  - component: {fileID: 5608976334526828983}
   m_Layer: 0
   m_Name: Grunt
   m_TagString: Enemy
@@ -294,6 +295,7 @@ Transform:
   m_Children:
   - {fileID: 5234875053570604768}
   - {fileID: 3290763951528876614}
+  - {fileID: 2813631995696447294}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4331290630838902461
@@ -393,6 +395,22 @@ MonoBehaviour:
   lookAtTime: 3
   patrolRange: 0
   kickForce: 15
+--- !u!114 &5608976334526828983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2904743432797371451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84f71c2733457634aa183e7d4d8c05b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarUIPrefab: {fileID: 8882952484997024564, guid: 05d88470df658d74f9b576bc17aaeedf, type: 3}
+  barPoint: {fileID: 2813631995696447294}
+  alwaysVisible: 1
+  visibleTime: 5
 --- !u!1 &3282565795635406198
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,6 +600,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7915770355590643170}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5498889414386976290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2813631995696447294}
+  m_Layer: 0
+  m_Name: HealthBar Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2813631995696447294
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5498889414386976290}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6340924610456318394}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5566995919920866409
 GameObject:
