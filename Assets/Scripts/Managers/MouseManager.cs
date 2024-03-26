@@ -42,6 +42,9 @@ public class MouseManager : Singleton<MouseManager>
                 case "Enemy":
                     Cursor.SetCursor(attack,new Vector2(16,16),CursorMode.Auto);
                     break;
+                case "AttackAble":
+                    Cursor.SetCursor(attack,new Vector2(16,16),CursorMode.Auto);
+                    break;
             }
         }
     }
