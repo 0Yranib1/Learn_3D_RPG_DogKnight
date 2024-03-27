@@ -78,12 +78,28 @@ public class PlayerController : MonoBehaviour
         }
     }
     
+    
+    private void OnEnable()
+    {
+
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
         MouseManager.Instance.OnMouseClicked += MoveToTarget;
         MouseManager.Instance.OnEnemyClicked += EventAttack;
         GameManager.Instance.RigisterPlayer(characterStatus);
+    }
+    
+    private void OnDisable()
+    {
+        if (!MouseManager.IsInitialized)
+        {
+            return;
+        }
+        MouseManager.Instance.OnMouseClicked -= MoveToTarget;
+        MouseManager.Instance.OnEnemyClicked -= EventAttack;
     }
 
     // Update is called once per frame
