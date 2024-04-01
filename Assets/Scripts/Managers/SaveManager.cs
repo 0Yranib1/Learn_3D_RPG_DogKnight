@@ -2,10 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 public class SaveManager : Singleton<SaveManager>
 {
+    private string sceneName="";
+    public string SceneName
+    {
+        get { return PlayerPrefs.GetString(sceneName); }
+    }
     protected override void Awake()
     {
         base.Awake();
@@ -14,6 +20,10 @@ public class SaveManager : Singleton<SaveManager>
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneController.Instance.TransitionToMain();
+        }
         if (Input.GetKeyDown(KeyCode.S))
         {
             SavePlayerData();
@@ -39,6 +49,7 @@ public class SaveManager : Singleton<SaveManager>
         //TODO:检查是否有办法指定存档位置 当前为默认位置
         var jsonData = JsonUtility.ToJson(data);
         PlayerPrefs.SetString(key,jsonData);
+        PlayerPrefs.SetString(sceneName,SceneManager.GetActiveScene().name);
         PlayerPrefs.Save();
     }
 

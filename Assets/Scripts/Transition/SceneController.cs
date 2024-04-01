@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -59,5 +60,39 @@ public class SceneController : Singleton<SceneController>
                 return entrances[i];
         }
         return null;
+    }
+
+    public void TransitionToFirstLevel()
+    {
+        StartCoroutine(LoadLevel("SampleScene"));
+    }
+    
+    IEnumerator LoadLevel(String scene)
+    {
+        if (scene != "")
+        {
+            yield return SceneManager.LoadSceneAsync(scene);
+            yield return player = Instantiate(playerPrefab, GameManager.Instance.GetEntrance().position,
+                GameManager.Instance.GetEntrance().rotation);
+            //保存数据
+            SaveManager.Instance.SavePlayerData();
+            yield break;
+        }
+    }
+
+    public void TransitionToLoadGame()
+    {
+        StartCoroutine(LoadLevel(SaveManager.Instance.SceneName));
+    }
+
+    IEnumerator LoadMain()
+    {
+        yield return SceneManager.LoadSceneAsync("Main");
+        yield break;
+    }
+
+    public void TransitionToMain()
+    {
+        StartCoroutine(LoadMain());
     }
 }
