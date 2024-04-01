@@ -29,7 +29,7 @@ public class CharacterData_SO : ScriptableObject
     public void UpdateExp(int point)
     {
         currentExp += point;
-        if (currentExp >= baseExp)
+        if (currentExp >= baseExp && baseExp!=0)
         {
             LeveUp();
         }
@@ -41,7 +41,6 @@ public class CharacterData_SO : ScriptableObject
         baseExp += (int)(baseExp * LevelMultiplier);
         maxHealth = (int)(maxHealth * LevelMultiplier);
         currentHealth = maxHealth;
-        Debug.Log("升级"+currentLevel+"血量"+maxHealth);
 
     }
 }

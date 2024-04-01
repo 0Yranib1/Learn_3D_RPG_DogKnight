@@ -49,7 +49,8 @@ public class GameManager : Singleton<GameManager>
     {
         foreach (var item in FindObjectsOfType<TransitionDestination>())
         {
-            if (item.destinationTag == TransitionDestination.DestinationTag.MainMenu) ;
+            
+            if (item.destinationTag == TransitionDestination.DestinationTag.MainMenu)
             {
                 return item.transform;
             }
