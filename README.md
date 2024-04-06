@@ -1,4 +1,6 @@
 # 项目说明 V1.0
+## 项目简单介绍
+简单鼠标控制3D RPG
 ## 项目资源来自
 - [Low-Poly Simple Nature Pack](https://assetstore.unity.com/packages/3d/environments/landscapes/low-poly-simple-nature-pack-162153)
 - [Dog Knight PBR Polyart](https://assetstore.unity.com/packages/3d/characters/animals/dog-knight-pbr-polyart-135227)
@@ -24,3 +26,6 @@
 - bug修复
 - 重置地图设计、数值设计
 - 代码优化
+
+> [!WARNING]
+> 本项目无策划、无地编，仅为单人学习开发，可能出现数值、地图等设计糟糕的情况出现
